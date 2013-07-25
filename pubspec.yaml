@@ -4,7 +4,7 @@ author: Daniel Davidson <dbdavidson@yahoo.com>
 dependencies:
   pathos:  "any"
   ebisu:
-      path: /Users/dbdavidson/dev/open_source/codegen/dart/ebisu
+      path: ../ebisu
 # custom <ebisu_web_ui dependencies>
 # end <ebisu_web_ui dependencies>
 

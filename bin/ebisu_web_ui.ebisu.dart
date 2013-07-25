@@ -14,7 +14,7 @@ main() {
         ..dependencies = [
           pubdep('pathos'),
           pubdep('ebisu')
-          ..path = ebisuPath,
+          ..path = '../ebisu',
         ]
     )
     ..scripts = [

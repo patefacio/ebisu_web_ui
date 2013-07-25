@@ -3,8 +3,8 @@
 packages:
   ebisu:
     description:
-      path: "/Users/dbdavidson/dev/open_source/codegen/dart/ebisu"
-      relative: false
+      path: "/Users/dbdavidson/dev/open_source/ebisu_web_ui/../ebisu"
+      relative: true
     source: path
     version: "0.0.1"
   pathos:

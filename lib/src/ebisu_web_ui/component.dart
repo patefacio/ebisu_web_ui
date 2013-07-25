@@ -120,7 +120,7 @@ main() {
 
     components.forEach((component) {
       cssEntries.add('''
-[is=x-${component.id.emacs}] {
+[is=${component.id.emacs}] {
 ${indentBlock(cssCustomBlock(component.id.emacs))}
 }
 ''');
@@ -206,11 +206,11 @@ class Component {
 
   void finalize() {
     if(!_finalized) {
-      _name = "x-${id.emacs}";
+      _name = id.emacs;
       if(implClass == null) {
         print("Creating impl of type ${id}");
         implClass = new Class(id)
-          ..extend = 'CustomElement'
+          ..extend = 'PolymerElement'
           ..doc = doc;
       }
 
@@ -237,13 +237,13 @@ ${indentBlock(htmlImportsBlock, '    ')}
 ${indentBlock(htmlCustomBlock('${id} head'), '    ')}
   </head>
   <body>
-    <element name="${name}" extends="${new Id(extendsElement).emacs}" constructor="${id.capCamel}" apply-author-styles>
+    <polymer-element name="${name}" extends="${new Id(extendsElement).emacs}" constructor="${id.capCamel}" apply-author-styles>
       <template>
 ${indentBlock(templateFragment, '        ')}
 ${indentBlock(htmlCustomBlock('${id} template'), '        ')}
       </template>
       <script type="application/dart" src="${id.snake}.dart"></script>
-    </element>
+    </polymer-element>
   </body>
 </html>
 ''';
