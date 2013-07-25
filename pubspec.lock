@@ -3,9 +3,10 @@
 packages:
   ebisu:
     description:
-      path: "/Users/dbdavidson/dev/open_source/ebisu_web_ui/../ebisu"
-      relative: true
-    source: path
+      ref: null
+      resolved-ref: c33a42e756332d2ce7bc7e7688f6ff804e82d874
+      url: "git://github.com/patefacio/ebisu"
+    source: git
     version: "0.0.1"
   pathos:
     description: pathos
