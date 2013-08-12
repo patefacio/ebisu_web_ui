@@ -30,17 +30,20 @@ class ComponentLibrary {
     // custom <ComponentLibrary>
 
     pubSpec = new PubSpec(id)
-      ..addDependency(new PubDependency('browser')..version = ">=0.5.20 <0.5.21")
-      ..addDependency(new PubDependency('pathos')..version = ">=0.5.20 <0.5.21")
-      ..addDependency(new PubDependency('polymer')..version = "any")
-      ..addDependency(new PubDependency('logging')..version = ">=0.5.20 <0.5.21")
-      ..addDependency(new PubDependency('logging_handlers')..version = ">=0.5.0+3 <0.5.1");
+      ..addDependency(new PubDependency('browser'))
+      ..addDependency(new PubDependency('pathos'))
+      ..addDependency(new PubDependency('polymer'))
+      ..addDependency(new PubDependency('logging'))
+      //      ..addDependency(new PubDependency('logging_handlers')..version = ">=0.5.0+3 <0.5.1");
+      ;
 
     // end <ComponentLibrary>
   }
   
   /// Documentation for the component library
   String doc;
+  /// Prefix associated with all components in the library
+  String prefix;
   /// Path in which to generate the component library
   String rootPath;
   /// Default access for members
@@ -66,6 +69,9 @@ class ComponentLibrary {
   void finalize() {
     if(!_finalized) {
       for(Component component in components) {
+        if(component.prefix == null) {
+          component.prefix = prefix;
+        }
         component.finalize();
       }
       _finalized = true;
@@ -88,7 +94,7 @@ ${component.imports.map((comp) => Library.importStatement(comp)).join('\n')}
 
 final _logger = new Logger("${id}");
 
-
+@CustomTag("${component.prefixedName}")
 ${component.implClass.define()}
 ${component.supportClasses.map((c) => c.define()).toList().join('\n')}
 
@@ -99,7 +105,7 @@ ${customBlock(id.snake)}
 
     });
 
-
+    /*
     var buildFile = "${rootPath}/${id.snake}/build.dart";
     mergeWithFile('''
 import "dart:io";
@@ -113,7 +119,7 @@ main() {
     ]);
 }
 ''', buildFile);
-
+    */
     var cssFile = "${rootPath}/${id.snake}/lib/components/${id.snake}.css";
     List<String> cssEntries = [];
     cssEntries.add(cssCustomBlock('${id} top'));
@@ -143,8 +149,8 @@ ${indentBlock(cssCustomBlock(component.id.emacs))}
     // For example codegen - import all components
     List<String> importStatements = 
       components.map((component) => 
-          '<link rel="import" href="package:${id.snake}/components/${component.id.snake}.html">').toList();
-    importStatements.add('<link rel="stylesheet" href="packages/${id.snake}/components/${id.snake}.css">');
+          '<link rel="import" href="../packages/${id.snake}/components/${component.id.snake}.html">').toList();
+    importStatements.add('<link rel="stylesheet" href="../packages/${id.snake}/components/${id.snake}.css">');
 
     examples.forEach((example) {
       var exampleHtmlFile = "${rootPath}/${id.snake}/example/${example.id.snake}/${example.id.snake}.html";
@@ -152,10 +158,12 @@ ${indentBlock(cssCustomBlock(component.id.emacs))}
 <html>
   <head>
 ${indentBlock(importStatements.join('\n'))}  
+${indentBlock('<script src="packages/polymer/boot.js"></script>')}
 ${indentBlock(htmlCustomBlock('head ${example.id}'))}
   </head>
   <body>
 ${indentBlock(htmlCustomBlock('body ${example.id}'))}
+${indentBlock('<script type="application/dart"> main(){} </script>')}
   </body>
 </html>
 ''';
@@ -179,6 +187,11 @@ class Component {
   Id id;
   /// Description of the component
   String doc;
+  /// Prefix associated with component
+  String prefix;
+  Id _prefixedId;
+  /// Id with prefix
+  Id get prefixedId => _prefixedId;
   /// Dom element or other component being extended
   String extendsElement = "div";
   /// Class implementing this component - currently will extend WebComponent
@@ -196,8 +209,11 @@ class Component {
   /// Component imports required by the component
   List<String> htmlImports = [];
   String _name;
-  /// Name as used in the html (i.e. words of name hyphenated
+  /// Name as used in the html (i.e. words of name hyphenated)
   String get name => _name;
+  String _prefixedName;
+  /// Name including prefix
+  String get prefixedName => _prefixedName;
   bool _finalized = false;
   /// Set to true on finalize
   bool get finalized => _finalized;
@@ -207,6 +223,8 @@ class Component {
   void finalize() {
     if(!_finalized) {
       _name = id.emacs;
+      _prefixedId = (prefix != null)? new Id('${prefix}_${id.snake}') : id;
+      _prefixedName = _prefixedId.emacs;
       if(implClass == null) {
         print("Creating impl of type ${id}");
         implClass = new Class(id)
@@ -217,7 +235,7 @@ class Component {
       // Reuse component doc for implClass
       if(implClass.doc == null) implClass.doc = doc;
       // Ensure implClass is derived from WebComponent (for now)
-      if(implClass.extend == null) implClass.extend = 'CustomElement';
+      if(implClass.extend == null) implClass.extend = 'PolymerElement';
 
       implClass.parent = null;
       supportClasses.forEach((c) => (c.parent = null));
@@ -237,7 +255,7 @@ ${indentBlock(htmlImportsBlock, '    ')}
 ${indentBlock(htmlCustomBlock('${id} head'), '    ')}
   </head>
   <body>
-    <polymer-element name="${name}" extends="${new Id(extendsElement).emacs}" constructor="${id.capCamel}" apply-author-styles>
+    <polymer-element name="${prefixedName}" extends="${new Id(extendsElement).emacs}" constructor="${id.capCamel}" apply-author-styles>
       <template>
 ${indentBlock(templateFragment, '        ')}
 ${indentBlock(htmlCustomBlock('${id} template'), '        ')}

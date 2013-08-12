@@ -14,7 +14,8 @@ main() {
         ..dependencies = [
           pubdep('pathos'),
           pubdep('ebisu')
-          ..path = '../ebisu',
+          ..gitRef = 'HEAD'
+          ..path = 'git://github.com/patefacio/ebisu',
         ]
     )
     ..scripts = [
@@ -47,6 +48,8 @@ main() {
           ..members = [
             member('doc')
             ..doc = 'Documentation for the component library',
+            member('prefix')
+            ..doc = 'Prefix associated with all components in the library',
             member('root_path')
             ..doc = 'Path in which to generate the component library',
             member('default_member_access')
@@ -91,6 +94,12 @@ main() {
             ..ctors = [''],
             member('doc')
             ..doc = 'Description of the component',
+            member('prefix')
+            ..doc = 'Prefix associated with component',
+            member('prefixed_id')
+            ..type = 'Id'
+            ..access = Access.RO
+            ..doc = 'Id with prefix',
             member('extends_element')
             ..doc = 'Dom element or other component being extended'
             ..classInit = 'div',
@@ -119,8 +128,11 @@ main() {
             ..type = 'List<String>'
             ..classInit = '[]',
             member('name')
-            ..doc = 'Name as used in the html (i.e. words of name hyphenated'
+            ..doc = 'Name as used in the html (i.e. words of name hyphenated)'
             ..access = Access.RO,
+            member('prefixed_name')
+            ..access = Access.RO
+            ..doc = 'Name including prefix',
             member('finalized')
             ..doc = 'Set to true on finalize'
             ..access = Access.RO
