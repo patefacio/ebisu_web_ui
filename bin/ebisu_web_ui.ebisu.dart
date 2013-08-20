@@ -52,6 +52,10 @@ main() {
             ..doc = 'Prefix associated with all components in the library',
             member('root_path')
             ..doc = 'Path in which to generate the component library',
+            member('is_inlined')
+            ..doc = 'If true generates entire component library as single file'
+            ..type = 'bool'
+            ..classInit = 'false',
             member('default_member_access')
             ..doc = 'Default access for members'
             ..type = 'Access'

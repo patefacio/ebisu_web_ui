@@ -46,6 +46,8 @@ class ComponentLibrary {
   String prefix;
   /// Path in which to generate the component library
   String rootPath;
+  /// If true generates entire component library as single file
+  bool isInlined = false;
   /// Default access for members
   Access defaultMemberAccess = Access.IA;
   /// Id of the component library
@@ -105,21 +107,6 @@ ${customBlock(id.snake)}
 
     });
 
-    /*
-    var buildFile = "${rootPath}/${id.snake}/build.dart";
-    mergeWithFile('''
-import "dart:io";
-import "package:polymer/component_build.dart";
-
-main() {
-  build(new Options().arguments, 
-    [
-      ${examples.map((eg) =>
-       '"example/${eg.id.snake}/${eg.id.snake}.html"').join(',\n      ')}
-    ]);
-}
-''', buildFile);
-    */
     var cssFile = "${rootPath}/${id.snake}/lib/components/${id.snake}.css";
     List<String> cssEntries = [];
     cssEntries.add(cssCustomBlock('${id} top'));
