@@ -1,11 +1,11 @@
 part of ebisu_web_ui;
 
 /// Example usage of the components
-class Example { 
+class Example {
   Example(
     this.id
   ) {
-  
+
   }
   
   /// Id of the example
@@ -23,7 +23,7 @@ Example example(Id id) {
 
 
 /// Collection of components wrapped in a library (think http://pub.dartlang.org/packages/widget)
-class ComponentLibrary { 
+class ComponentLibrary {
   ComponentLibrary(
     this.id
   ) {
@@ -163,11 +163,11 @@ ${indentBlock('<script type="application/dart"> main(){} </script>')}
 }
 
 /// Declaratively define component to generate its stubbed out support
-class Component { 
+class Component {
   Component(
     this.id
   ) {
-  
+
   }
   
   /// Id - used to generate name of component
