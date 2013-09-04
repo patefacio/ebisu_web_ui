@@ -1,7 +1,7 @@
 import "dart:io";
 import "package:pathos/path.dart" as path;
 import "package:ebisu/ebisu.dart";
-import "package:ebisu/ebisu_id.dart";
+import "package:id/id.dart";
 import "package:ebisu/ebisu_dart_meta.dart";
 
 String _topDir = path.dirname(path.dirname(path.absolute(new Options().script)));
@@ -25,7 +25,7 @@ main() {
       ..doc = 'Support for generating shell for web components per http://www.dartlang.org/articles/web-ui/spec.html'
       ..imports = [
         '"package:ebisu/ebisu.dart"',
-        '"package:ebisu/ebisu_id.dart"',
+        '"package:id/id.dart"',
         '"package:ebisu/ebisu_dart_meta.dart"',
       ]
       ..parts = [

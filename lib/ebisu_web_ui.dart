@@ -2,8 +2,11 @@
 library ebisu_web_ui;
 
 import 'package:ebisu/ebisu.dart';
-import 'package:ebisu/ebisu_id.dart';
+import 'package:id/id.dart';
 import 'package:ebisu/ebisu_dart_meta.dart';
+// custom <additional imports>
+// end <additional imports>
+
 part "src/ebisu_web_ui/component.dart";
 
 // custom <library ebisu_web_ui>

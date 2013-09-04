@@ -7,7 +7,7 @@ class Example {
   ) {
 
   }
-  
+
   /// Id of the example
   final Id id;
 
@@ -39,7 +39,7 @@ class ComponentLibrary {
 
     // end <ComponentLibrary>
   }
-  
+
   /// Documentation for the component library
   String doc;
   /// Prefix associated with all components in the library
@@ -169,7 +169,7 @@ class Component {
   ) {
 
   }
-  
+
   /// Id - used to generate name of component
   Id id;
   /// Description of the component
