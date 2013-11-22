@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<!-- custom <mortgageDetails head> -->
+
+    <link rel="stylesheet" id="font-awesome-4-css" href="http://astronautweb.co/wp-content/themes/astro2012/css/font-awesome-4.0.3.css?ver=4.0.3" type="text/css" media="all">
+    <link rel="import" href="money_input.html">
+    <link rel="import" href="rate_input.html">
+    <link rel="import" href="num_with_units_input.html">
+    <link rel="import" href="date_input.html">
+
+<!-- end <mortgageDetails head> -->
+
+<polymer-element name="mortgage-details"  apply-author-styles>
+  <template>
+    <style>
+    /* custom <mortgageDetails style> */
+
+        host: {
+        }
+        fieldset {
+        width: 40%;
+        background-color: yellow;
+        }
+        legend, money-input, num-with-units-input, rate-input {
+        display: block;
+        position: relative;
+        left: 0em;
+        top: -0.25em;
+        background-color: peachpuff;
+        }
+
+        money-input {
+/*        position: absolute;*/
+        width: 300px;
+        }
+
+        label {
+        clear: left;
+        float: left;
+        width: 8em; /* or whatever length suits */
+        }
+
+    /* end <mortgageDetails style> */
+    </style>
+
+    <!-- custom <mortgageDetails template> -->
+
+    <p><i class="fa fa-tasks"></i> Picture annotated text</p>
+
+      <fieldset>
+        <legend>Mortgage Details</legend>
+
+        <label class="fa fa-filter">Mortgage Amount</label>
+        <money-input id="mortgage-amount"></money-input>
+
+        <label>Term</label>
+        <num-with-units-input id="term-years"></num-with-units-input>
+
+        <label>Mortgage Rate</label>
+        <rate-input id="rate"></rate-input>
+
+        <label>Start Date</label>
+        <date-input id="date"></date-input>
+
+        <p>The payment is {{formattedPayment}}</p>
+
+        <aside><h2>Help</h2> Enter the information and the payment will be calculated.</aside>
+      </fieldset>
+
+    <!-- end <mortgageDetails template> -->
+
+  </template>
+  <script type="application/dart" src="mortgage_details.dart"></script>
+</polymer-element>

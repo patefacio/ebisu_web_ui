@@ -1,0 +1,41 @@
+/* custom <mortgageCalculator top> */
+/* end <mortgageCalculator top> */
+
+
+[is=money-input] {
+  /* custom <money-input> */
+  /* end <money-input> */
+
+}
+
+
+[is=rate-input] {
+  /* custom <rate-input> */
+  /* end <rate-input> */
+
+}
+
+
+[is=num-with-units-input] {
+  /* custom <num-with-units-input> */
+  /* end <num-with-units-input> */
+
+}
+
+
+[is=date-input] {
+  /* custom <date-input> */
+  /* end <date-input> */
+
+}
+
+
+[is=mortgage-details] {
+  /* custom <mortgage-details> */
+  /* end <mortgage-details> */
+
+}
+
+
+/* custom <mortgageCalculator bottom> */
+/* end <mortgageCalculator bottom> */
