@@ -1,17 +1,22 @@
 library rate_input;
+import 'dart:html' hide Timeline;
+import 'package:logging/logging.dart';
+import 'package:money/format.dart';
+import 'package:polymer/polymer.dart';
 
-import "dart:html";
-import "package:polymer/polymer.dart";
-import "package:logging/logging.dart";
-import "package:money/format.dart";
+// custom <additional imports>
+// end <additional imports>
 
-final _logger = new Logger("mortgageCalculator");
+
+final _logger = new Logger("rateInput");
 
 @CustomTag("rate-input")
 class RateInput extends PolymerElement {
+
   InputElement rateElement;
 
   RateInput.created() : super.created() {
+    _logger.fine('RateInput created sr => $shadowRoot');
     // custom <RateInput created>
 
     if(shadowRoot != null) {
@@ -21,11 +26,54 @@ class RateInput extends PolymerElement {
     }
 
     // end <RateInput created>
+
   }
+
+  @override
+  void domReady() {
+    super.domReady();
+    _logger.fine('RateInput domReady with sr => $shadowRoot');
+    // custom <RateInput domReady>
+    // end <RateInput domReady>
+
+  }
+
+  @override
+  void ready() {
+    super.ready();
+    _logger.fine('RateInput ready with sr => $shadowRoot');
+    // custom <RateInput ready>
+    // end <RateInput ready>
+
+  }
+
+  @override
+  void attached() {
+    // custom <RateInput pre-attached>
+    // end <RateInput pre-attached>
+
+    super.attached();
+    _logger.fine('RateInput attached with sr => $shadowRoot');
+    assert(shadowRoot != null);
+    // custom <RateInput attached>
+    // end <RateInput attached>
+
+    _isAttached = true;
+    _onAttachedHandlers.forEach((handler) => handler(this));
+  }
+
+  void onAttached(void onAttachedHandler(RateInput)) {
+    if(_isAttached) {
+      onAttachedHandler(this);
+    } else {
+      _onAttachedHandlers.add(onAttachedHandler);
+    }
+  }
+
 
   // custom <class RateInput>
 
-  String set label(String s) {
+  set label(String s) {
     rateElement.placeholder = s;
   }
 
@@ -37,13 +85,16 @@ class RateInput extends PolymerElement {
   }
 
   num get rate {
-    return pullNum(rateElement.value);
+    return pullNum(rateElement.value)/100.0;
   }
 
   // end <class RateInput>
+  bool _isAttached = false;
+  List _onAttachedHandlers = [];
 }
 
 
 
-// custom <mortgage_calculator>
-// end <mortgage_calculator>
+
+// custom <rate_input>
+// end <rate_input>

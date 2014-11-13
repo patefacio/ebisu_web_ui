@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
+
+<!-- custom <mortgageCalculator head> -->
+
+<link rel="import" href="mortgage_details.html">
+<link rel="import" href="payment_schedule.html">
+
+<!-- end <mortgageCalculator head> -->
+
+
+<polymer-element name="mortgage-calculator">
+  <template>
+    <style>
+    /* custom <mortgageCalculator style> */
+
+        label {
+        clear: left;
+        float: left;
+        width: 6em; /* or whatever length suits */
+        text-align: left;
+        }
+
+        legend {
+        border-style: double;
+        border-radius: 5px;
+        }
+
+        fieldset {
+        border-style: 35 double;
+        border-radius: 5px;
+        opacity: .85;
+        }
+
+        mortgage-details {
+        border-style: 5 double;
+        padding: 5px;
+        display: block;
+        float: left;
+        background-color: cornsilk;
+        width: 17em;
+        }
+
+        payment-schedule {
+        border-style: 5 double;
+        padding: 5px;
+        display: block;
+        float: left;
+        background-color: cornsilk;
+        width: 30em;
+        height: 100%;
+        }
+
+    /* end <mortgageCalculator style> */
+    </style>
+
+    <!-- custom <mortgageCalculator template> -->
+
+    <mortgage-details id="details"></mortgage-details>
+    <payment-schedule id="schedule"></payment-schedule>
+
+    <!-- end <mortgageCalculator template> -->
+
+  </template>
+  <script type="application/dart" src="mortgage_calculator.dart"></script>
+</polymer-element>

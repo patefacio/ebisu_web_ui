@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<link rel="import" href="../../../packages/polymer/polymer.html">
+
 
 <!-- custom <mortgageDetails head> -->
 
@@ -6,66 +8,37 @@
     <link rel="import" href="money_input.html">
     <link rel="import" href="rate_input.html">
     <link rel="import" href="num_with_units_input.html">
-    <link rel="import" href="date_input.html">
+    <link rel="import" href="payment_schedule.html">
 
 <!-- end <mortgageDetails head> -->
 
-<polymer-element name="mortgage-details"  apply-author-styles>
+
+<polymer-element name="mortgage-details">
   <template>
     <style>
     /* custom <mortgageDetails style> */
-
-        host: {
-        }
-        fieldset {
-        width: 40%;
-        background-color: yellow;
-        }
-        legend, money-input, num-with-units-input, rate-input {
-        display: block;
-        position: relative;
-        left: 0em;
-        top: -0.25em;
-        background-color: peachpuff;
-        }
-
-        money-input {
-/*        position: absolute;*/
-        width: 300px;
-        }
-
-        label {
-        clear: left;
-        float: left;
-        width: 8em; /* or whatever length suits */
-        }
 
     /* end <mortgageDetails style> */
     </style>
 
     <!-- custom <mortgageDetails template> -->
 
-    <p><i class="fa fa-tasks"></i> Picture annotated text</p>
 
-      <fieldset>
-        <legend>Mortgage Details</legend>
+    <fieldset>
+      <legend>Mortgage Details</legend>
 
-        <label class="fa fa-filter">Mortgage Amount</label>
-        <money-input id="mortgage-amount"></money-input>
+      <label><span class="fa fa-usd fa-fw" style="width:1.5em"></span> Amount</label>
+      <money-input id="mortgage-amount"></money-input>
 
-        <label>Term</label>
-        <num-with-units-input id="term-years"></num-with-units-input>
+      <label><span class="fa fa-calendar fa-fw" style="width:1.5em"></span> Term</label>
+      <num-with-units-input id="term-years"></num-with-units-input>
 
-        <label>Mortgage Rate</label>
-        <rate-input id="rate"></rate-input>
+      <label><span class="fa fa-signal fa-fw" style="width:1.5em"></span> Rate</label>
+      <rate-input id="rate"></rate-input>
 
-        <label>Start Date</label>
-        <date-input id="date"></date-input>
+      <p>Resulting Payment: {{formattedPayment}}</p>
 
-        <p>The payment is {{formattedPayment}}</p>
-
-        <aside><h2>Help</h2> Enter the information and the payment will be calculated.</aside>
-      </fieldset>
+    </fieldset>
 
     <!-- end <mortgageDetails template> -->
 

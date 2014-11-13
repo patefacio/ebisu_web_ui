@@ -2,37 +2,57 @@
 /* end <mortgageCalculator top> */
 
 
-[is=money-input] {
+money-input {
   /* custom <money-input> */
+
+/*        background-color: lightcyan;
+        border: 2px double;
+        border-radius: 5px;
+        text-align: right;*/
+
   /* end <money-input> */
 
 }
 
 
-[is=rate-input] {
+rate-input {
   /* custom <rate-input> */
   /* end <rate-input> */
 
 }
 
 
-[is=num-with-units-input] {
+num-with-units-input {
   /* custom <num-with-units-input> */
   /* end <num-with-units-input> */
 
 }
 
 
-[is=date-input] {
+date-input {
   /* custom <date-input> */
   /* end <date-input> */
 
 }
 
 
-[is=mortgage-details] {
+mortgage-calculator {
+  /* custom <mortgage-calculator> */
+  /* end <mortgage-calculator> */
+
+}
+
+
+mortgage-details {
   /* custom <mortgage-details> */
   /* end <mortgage-details> */
+
+}
+
+
+payment-schedule {
+  /* custom <payment-schedule> */
+  /* end <payment-schedule> */
 
 }
 
