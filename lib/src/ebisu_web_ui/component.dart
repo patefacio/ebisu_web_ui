@@ -2,7 +2,6 @@ part of ebisu_web_ui.ebisu_web_ui;
 
 /// Example usage of the components
 class Example {
-
   Example(this.id);
 
   /// Id of the example
@@ -14,7 +13,6 @@ class Example {
   /// Bottom part in body allowing code generated custom content
   String feet;
   ComponentFilter importComponentsWhere;
-
 // custom <class Example>
 
   String get relativePath =>
@@ -30,7 +28,6 @@ example([Id id]) =>
 
 /// Collection of components wrapped in a library (think http://pub.dartlang.org/packages/widget)
 class ComponentLibrary {
-
   ComponentLibrary(this.id) {
     // custom <ComponentLibrary>
 
@@ -72,7 +69,6 @@ class ComponentLibrary {
   List<PubDependency> dependencies = [];
   /// List of examples for the component library
   List<Example> examples = [];
-
 // custom <class ComponentLibrary>
 
   toString() => '''ComponentLibrary(${id.emacs}) [
@@ -228,7 +224,6 @@ ${indentBlock(cssCustomBlock(component.id.emacs))}
 
 /// Declaratively define component to generate its stubbed out support
 class Component {
-
   Component(this.id);
 
   /// Id - used to generate name of component
@@ -267,7 +262,6 @@ class Component {
   bool nonPolymer = false;
   /// Set to true on finalize
   bool get finalized => _finalized;
-
 // custom <class Component>
 
   toString() => 'Component($prefixedName)';
@@ -434,11 +428,9 @@ ${indentBlock(htmlCustomBlock('${id} template'), '    ')}
 }
 
 class LabeledElement {
-
   Id id;
   String label;
   String elementComponentName;
-
   // custom <class LabeledElement>
   LabeledElement(this.id, this.label, this.elementComponentName);
   // end <class LabeledElement>
@@ -446,10 +438,8 @@ class LabeledElement {
 
 /// Declaratively define a form component
 class FormComponent extends Component {
-
   String legendText;
   List labeledElements = [];
-
   // custom <class FormComponent>
 
   FormComponent(Id _id) : super(_id) { print("Created form ${id}");}
@@ -491,20 +481,16 @@ ${indentBlock(htmlCustomBlock('${id} template'), '    ')}
 
 /// Details for an individual entry in a picklist
 class PicklistEntry {
-
   Id id;
   String label;
   String toolTip;
-
   // custom <class PicklistEntry>
   // end <class PicklistEntry>
 }
 
 /// Declaratively define a pick list
 class PicklistComponent extends Component {
-
   List<PickListEntry> entries = [];
-
   // custom <class PicklistComponent>
 
   PicklistComponent(Id _id) : super(_id) { /*print("Created picklist ${id}");*/ }

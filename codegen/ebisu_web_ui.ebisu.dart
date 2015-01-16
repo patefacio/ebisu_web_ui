@@ -12,7 +12,6 @@ main() {
     ..rootPath = _topDir
     ..pubSpec = (pubspec('ebisu_web_ui')
         ..dependencies = [
-          pubdep('ebisu')
         ]
     )
     ..includeReadme = true
