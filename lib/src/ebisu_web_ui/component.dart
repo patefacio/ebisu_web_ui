@@ -126,7 +126,6 @@ class ComponentLibrary {
   <head>
     <title>${example.id} example showing usage of ${id} component library</title>
 ${chomp(indentBlock(htmlCustomBlock('forehead ${example.id}'), '    '))}
-    <script src="packages/web_components/platform.js"></script>
 ${indentBlock(importStatements.join('\n'), '    ')}
 ${chomp(indentBlock(htmlCustomBlock('additional polymer imports ${example.id}'), '    '))}
 
