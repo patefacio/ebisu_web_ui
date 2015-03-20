@@ -14,8 +14,8 @@ main() {
         ..dependencies = [
         ]
     )
-    ..includeReadme = true
-    ..includeHop = true
+    ..includesReadme = true
+    ..includesHop = true
     ..scripts = [
     ]
     ..libraries = [
@@ -61,7 +61,7 @@ main() {
         ..classes = [
           class_('example')
           ..doc = 'Example usage of the components'
-          ..ctorSansNew = true
+          ..hasCtorSansNew = true
           ..members = [
             member('id')
             ..doc = 'Id of the example'
