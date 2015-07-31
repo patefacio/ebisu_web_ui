@@ -4,7 +4,7 @@ import "package:ebisu/ebisu.dart";
 import "package:id/id.dart";
 import "package:ebisu/ebisu_dart_meta.dart";
 
-String _topDir = path.dirname(path.dirname(path.absolute(Platform.script.path)));
+String _topDir = path.dirname(path.dirname(path.absolute(Platform.script.toFilePath())));
 
 main() {
 

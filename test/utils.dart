@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:path/path.dart' as path;
 
 String get packageRootPath {
-  var parts = path.split(path.absolute(Platform.script.path));
+  var parts = path.split(path.absolute(Platform.script.toFilePath()));
   int found = parts.lastIndexOf('ebisu_web_ui');
   if(found >= 0) {
     return path.joinAll(parts.getRange(0, found+1));
@@ -12,4 +12,3 @@ String get packageRootPath {
 }
 
 main() => print(packageRootPath);
-

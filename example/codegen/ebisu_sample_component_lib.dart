@@ -5,7 +5,7 @@ import "package:ebisu_web_ui/ebisu_web_ui.dart";
 import "package:id/id.dart";
 
 main() {
-  var here = dirname(dirname(absolute(Platform.script.path)));
+  var here = dirname(dirname(absolute(Platform.script.toFilePath())));
   print(here);
   ComponentLibrary mortgageCalculator =
     componentLibrary('mortgage_calculator')

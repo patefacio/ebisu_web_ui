@@ -331,8 +331,8 @@ void onAttached(void onAttachedHandler(${id.capCamel})) {
 
       // Reuse component doc for implClass
       if(implClass.doc == null) implClass.doc = doc;
-      supportClasses.forEach((c) => (c.parent = null));
-      enums.forEach((e) => (e.parent = null));
+      supportClasses.forEach((c) => (c.owner = null));
+      enums.forEach((e) => (e.owner = null));
       _finalized = true;
     }
   }
