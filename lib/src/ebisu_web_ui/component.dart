@@ -6,25 +6,25 @@ class Example {
 
   /// Id of the example
   final Id id;
+
   /// If true includes the standard export of polymer/init.dart otherwise includes dart file
   bool initPolymer = true;
+
   /// Top part in body allowing code generated custom content
   String neck;
+
   /// Bottom part in body allowing code generated custom content
   String feet;
   ComponentFilter importComponentsWhere;
 // custom <class Example>
 
-  String get relativePath =>
-    'web/examples/${id.snake}/${id.snake}.html';
+  String get relativePath => 'web/examples/${id.snake}/${id.snake}.html';
 
 // end <class Example>
 }
 
 /// Create a Example sans new, for more declarative construction
-Example
-example([Id id]) =>
-  new Example(id);
+Example example([Id id]) => new Example(id);
 
 /// Collection of components wrapped in a library (think http://pub.dartlang.org/packages/widget)
 class ComponentLibrary {
@@ -34,39 +34,49 @@ class ComponentLibrary {
     pubSpec = new PubSpec(id)
       ..addDependency(pubdep('polymer')..version = ">=0.15.0")
       ..addDependency(new PubDependency('logging'))
-      ..pubTransformers = [  ]
-      ;
+      ..pubTransformers = [];
 
-    system = new System(id)
-      ..pubSpec = pubSpec;
+    system = new System(id)..pubSpec = pubSpec;
 
     // end <ComponentLibrary>
   }
 
   /// Documentation for the component library
   String doc;
+
   /// Prefix associated with all components in the library
   String prefix;
+
   /// Path in which to generate the component library
   String rootPath;
+
   /// If true generates entire component library as single file
   bool isInlined = false;
+
   /// Default access for members
   Access defaultMemberAccess = Access.IA;
+
   /// Id of the component library
   final Id id;
+
   /// System containing this single component library
   System system;
+
   /// Pubspec for this component library
   PubSpec pubSpec;
+
   /// List of support libraries
   List<Library> libraries = [];
+
   /// List of components in the collection
   List<Component> components = [];
+
   /// Set to true on finalize
   bool get finalized => _finalized;
+
   /// List of PubDependency for this component and supporting libraries
   List<PubDependency> dependencies = [];
+
   /// List of examples for the component library
   List<Example> examples = [];
 // custom <class ComponentLibrary>
@@ -76,9 +86,9 @@ class ComponentLibrary {
 ]''';
 
   void finalize() {
-    if(!_finalized) {
-      for(Component component in components) {
-        if(component.prefix == null) {
+    if (!_finalized) {
+      for (Component component in components) {
+        if (component.prefix == null) {
           component.prefix = prefix;
         }
         component.finalize();
@@ -91,21 +101,24 @@ class ComponentLibrary {
     // For example codegen - import all components
 
     examples.forEach((example) {
+      var componentsToImport = (example.importComponentsWhere != null)
+          ? components.where(example.importComponentsWhere)
+          : components;
 
-      var componentsToImport = (example.importComponentsWhere != null)?
-        components.where(example.importComponentsWhere) : components;
+      List<String> importStatements = componentsToImport
+          .map((component) =>
+              '<link rel="import" href="packages/${id.snake}/components/${component.id.snake}.html">')
+          .toList();
 
-      List<String> importStatements =
-        componentsToImport.map((component) =>
-            '<link rel="import" href="packages/${id.snake}/components/${component.id.snake}.html">').toList();
+      importStatements.add(
+          '<link rel="stylesheet" href="packages/${id.snake}/components/${id.snake}.css">');
 
-      importStatements.add('<link rel="stylesheet" href="packages/${id.snake}/components/${id.snake}.css">');
-
-      var exampleHtmlFile = "${rootPath}/${id.snake}/web/examples/${example.id.snake}/${example.id.snake}.html";
-      var neck = example.neck != null? example.neck : '';
-      var feet = example.feet != null? example.feet : '';
-      var initCode = example.initPolymer?
-        '''
+      var exampleHtmlFile =
+          "${rootPath}/${id.snake}/web/examples/${example.id.snake}/${example.id.snake}.html";
+      var neck = example.neck != null ? example.neck : '';
+      var feet = example.feet != null ? example.feet : '';
+      var initCode = example.initPolymer
+          ? '''
 <script type="application/dart">
     import 'package:polymer/polymer.dart';
     import 'package:logging/logging.dart';
@@ -118,9 +131,10 @@ class ComponentLibrary {
     }
 </script>
 '''
-:'';
-      var scriptImport = example.initPolymer?
-        '' : '<script type="application/dart" src="${example.id.snake}.dart"></script>';
+          : '';
+      var scriptImport = example.initPolymer
+          ? ''
+          : '<script type="application/dart" src="${example.id.snake}.dart"></script>';
       var exampleHtml = '''<!DOCTYPE html>
 <html>
   <head>
@@ -144,13 +158,15 @@ $neck${chomp(indentBlock(htmlCustomBlock('body ${example.id}'), '    '))}$feet
 ''';
 
       mergeBlocksWithFile(exampleHtml, exampleHtmlFile, [
-        [ htmlCustomBegin, htmlCustomEnd ],
-        [ cssCustomBegin, cssCustomEnd ]
+        [htmlCustomBegin, htmlCustomEnd],
+        [cssCustomBegin, cssCustomEnd]
       ]);
 
-      if(!example.initPolymer) {
-        var exampleDartFile = "${rootPath}/${id.snake}/web/examples/${example.id.snake}/${example.id.snake}.dart";
-        mergeBlocksWithFile('''
+      if (!example.initPolymer) {
+        var exampleDartFile =
+            "${rootPath}/${id.snake}/web/examples/${example.id.snake}/${example.id.snake}.dart";
+        mergeBlocksWithFile(
+            '''
 import 'package:polymer/polymer.dart';
 import 'package:logging/logging.dart';
 ${customBlock('additional imports')}
@@ -167,10 +183,13 @@ ${customBlock('${example.id} main')}
 }
 
 ${customBlock('additional code')}
-''', exampleDartFile);
+''',
+            exampleDartFile,
+            [
+              [customBegin, customEnd]
+            ],
+            dartFormat);
       }
-
-
     });
   }
 
@@ -185,7 +204,7 @@ ${customBlock('additional code')}
     components.forEach((component) {
       var name = component.id.capCamel;
       component.generateDartImpl(componentPath);
-      if(!component.nonPolymer) {
+      if (!component.nonPolymer) {
         component.generateHtml(componentPath);
         cssEntries.add('''
 ${component.prefixedName} {
@@ -199,14 +218,12 @@ ${indentBlock(cssCustomBlock(component.id.emacs))}
     cssMergeWithFile(cssEntries.join('\n\n'), cssFile);
 
     pubSpec.addDependencies(dependencies);
-    if(pubSpec.doc == null)
-      pubSpec.doc = doc;
+    if (pubSpec.doc == null) pubSpec.doc = doc;
 
-    if(system.rootPath == null)
-      system.rootPath = "${rootPath}/${id.snake}";
+    if (system.rootPath == null) system.rootPath = "${rootPath}/${id.snake}";
 
     system.libraries = libraries;
-    if(examples.length > 0) {
+    if (examples.length > 0) {
       final entryPoints = [];
       examples.forEach((Example example) {
         entryPoints.add(example.relativePath);
@@ -227,38 +244,55 @@ class Component {
 
   /// Id - used to generate name of component
   Id id;
+
   /// Description of the component
   String doc;
+
   /// Prefix associated with component
   String prefix;
+
   /// Id with prefix
   Id get prefixedId => _prefixedId;
+
   /// Dom element or other component being extended
   String extendsElement;
+
   /// Class implementing this component - currently will extend WebComponent
   Class implClass;
+
   /// Enums defined in this component
   List<Enum> enums = [];
+
   /// Any additional support classes required to implement this component
   List<Class> supportClasses = [];
+
   /// How to construct the component (convention handles unless exceptional case)
   String constructor;
+
   /// If true styles from document apply to control
   bool applyAuthorStyles = true;
+
   /// If extends with observable
   bool observable = false;
+
   /// The internals of template fragment that will be rendered when the component is initialized
   String templateFragment = '';
+
   /// Dart imports required by the component
   List<String> imports = [];
+
   /// Component imports required by the component
   List<String> htmlImports = [];
+
   /// Name as used in the html (i.e. words of name hyphenated)
   String get name => _name;
+
   /// Name including prefix
   String get prefixedName => _prefixedName;
+
   /// If true just make a non-polymer dart library
   bool nonPolymer = false;
+
   /// Set to true on finalize
   bool get finalized => _finalized;
 // custom <class Component>
@@ -266,26 +300,30 @@ class Component {
   toString() => 'Component($prefixedName)';
 
   void finalize() {
-    if(!_finalized) {
+    if (!_finalized) {
       _name = id.emacs;
-      _prefixedId = (prefix != null)? new Id('${prefix}_${id.snake}') : id;
+      _prefixedId = (prefix != null) ? new Id('${prefix}_${id.snake}') : id;
       _prefixedName = _prefixedId.emacs;
 
-      if(implClass == null) {
+      if (implClass == null) {
         implClass = new Class(id);
       }
 
       implClass.doc = doc;
 
-      if(!nonPolymer) {
+      if (!nonPolymer) {
         var polymerCreated =
-          (null != extendsElement)? "  polymerCreated();\n" : "";
+            (null != extendsElement) ? "  polymerCreated();\n" : "";
 
         implClass
-          ..extend = implClass.extend == null? extendClause : implClass.extend
+          ..extend = implClass.extend == null ? extendClause : implClass.extend
           ..members.addAll([
-            member('is_attached')..classInit = false..access = IA,
-            member('on_attached_handlers')..classInit = []..access = IA,
+            member('is_attached')
+              ..classInit = false
+              ..access = IA,
+            member('on_attached_handlers')
+              ..classInit = []
+              ..access = IA,
           ])
           ..topInjection = '''
 
@@ -330,7 +368,7 @@ void onAttached(void onAttachedHandler(${id.capCamel})) {
       }
 
       // Reuse component doc for implClass
-      if(implClass.doc == null) implClass.doc = doc;
+      if (implClass.doc == null) implClass.doc = doc;
       supportClasses.forEach((c) => (c.owner = null));
       enums.forEach((e) => (e.owner = null));
       _finalized = true;
@@ -339,14 +377,14 @@ void onAttached(void onAttachedHandler(${id.capCamel})) {
 
   String get extendClause {
     String result = '';
-    if(null != extendsElement) {
-      if(elementMapping.containsKey(extendsElement)) {
+    if (null != extendsElement) {
+      if (elementMapping.containsKey(extendsElement)) {
         result = elementMapping[extendsElement];
       } else {
         result = idFromString(extendsElement).capCamel;
       }
       result += " with Polymer";
-      if(observable) {
+      if (observable) {
         result += ", Observable";
       }
     } else {
@@ -356,14 +394,15 @@ void onAttached(void onAttachedHandler(${id.capCamel})) {
   }
 
   String get extendsHtmlClause =>
-    (null != extendsElement) ? ' extends = "${extendsElement}"' : '';
+      (null != extendsElement) ? ' extends = "${extendsElement}"' : '';
 
   generateDartImpl(String componentPath) {
     var requiredImports = [
       "'dart:html' hide Timeline",
-      'package:logging/logging.dart' ];
+      'package:logging/logging.dart'
+    ];
     String customTag = '';
-    if(!nonPolymer) {
+    if (!nonPolymer) {
       requiredImports.add('package:polymer/polymer.dart');
       customTag = '@CustomTag("${prefixedName}")\n';
     }
@@ -385,20 +424,22 @@ ${supportClasses.map((c) => c.define()).toList().join('\n')}
 ${chomp(customBlock(id.snake))}
 ''';
     var dartFile = "${componentPath}/${id.snake}.dart";
-    mergeWithFile(definition, dartFile);
+    mergeWithFile(definition, dartFile, customBegin, customEnd, dartFormat);
   }
 
   generateHtml(String componentPath) {
     var htmlFile = "${componentPath}/${id.snake}.html";
     mergeBlocksWithFile(html, htmlFile, [
-      [ htmlCustomBegin, htmlCustomEnd ],
-      [ cssCustomBegin, cssCustomEnd ]
+      [htmlCustomBegin, htmlCustomEnd],
+      [cssCustomBegin, cssCustomEnd]
     ]);
   }
 
   String get html {
-    String htmlImportsBlock = indentBlock(htmlImports.map((i) =>
-            '<link rel="import" href=${importUri(i)}>').toList().join('\n'));
+    String htmlImportsBlock = indentBlock(htmlImports
+        .map((i) => '<link rel="import" href=${importUri(i)}>')
+        .toList()
+        .join('\n'));
 
     return '''<!DOCTYPE html>
 <link rel="import" href="../../../packages/polymer/polymer.html">
@@ -441,7 +482,9 @@ class FormComponent extends Component {
   List labeledElements = [];
   // custom <class FormComponent>
 
-  FormComponent(Id _id) : super(_id) { print("Created form ${id}");}
+  FormComponent(Id _id) : super(_id) {
+    print("Created form ${id}");
+  }
 
   get fields => labeledElements.map((le) => '''
 
@@ -450,10 +493,12 @@ class FormComponent extends Component {
                                     ''').join();
 
   String get html {
-    String htmlImportsBlock = indentBlock(htmlImports.map((i) =>
-            '<link rel="import" href=${importUri(i)}>').toList().join('\n'));
+    String htmlImportsBlock = indentBlock(htmlImports
+        .map((i) => '<link rel="import" href=${importUri(i)}>')
+        .toList()
+        .join('\n'));
     var id = this.id;
-    var legend = legendText != null? '<legend>$legendText</legend>' : '';
+    var legend = legendText != null ? '<legend>$legendText</legend>' : '';
     return '''<!DOCTYPE html>
 ${htmlImportsBlock}
 ${htmlCustomBlock('${id} head')}
@@ -492,11 +537,13 @@ class PicklistComponent extends Component {
   List<PickListEntry> entries = [];
   // custom <class PicklistComponent>
 
-  PicklistComponent(Id _id) : super(_id) { /*print("Created picklist ${id}");*/ }
+  PicklistComponent(Id _id) : super(_id) {/*print("Created picklist ${id}");*/}
 
   String get html {
-    String htmlImportsBlock = indentBlock(htmlImports.map((i) =>
-            '<link rel="import" href=${importUri(i)}>').toList().join('\n'));
+    String htmlImportsBlock = indentBlock(htmlImports
+        .map((i) => '<link rel="import" href=${importUri(i)}>')
+        .toList()
+        .join('\n'));
     var id = this.id;
     return '''<!DOCTYPE html>
 ${htmlImportsBlock}
@@ -529,27 +576,27 @@ typedef List ComponentFilter(Component component);
 // end <part component>
 
 Map elementMapping = {
-  'html' : 'HtmlElement',
-   //'' : 'SvgElement',
-  'a' : 'AnchorElement',
-   //'' : 'AudioElement',
-  'button' : 'ButtonElement',
-   //  '' : 'CanvasElement',
-  'div' : 'DivElement',
-  'img' : 'ImageElement',
-  'input' : 'InputElement',
-  'li' : 'LIElement',
-  'label' : 'LabelElement',
-  'menu' : 'MenuElement',
-  'meter' : 'MeterElement',
-  'ol' : 'OListElement',
-  'option' : 'OptionElement',
-  'output' : 'OutputElement',
-  'p' : 'ParagraphElement',
-  'pre' : 'PreElement',
-  'progress' : 'ProgressElement',
-  'select' : 'SelectElement',
-  'span' : 'SpanElement',
-  'ul' : 'UListElement',
-  'video' : 'VideoElement',
+  'html': 'HtmlElement',
+  //'' : 'SvgElement',
+  'a': 'AnchorElement',
+  //'' : 'AudioElement',
+  'button': 'ButtonElement',
+  //  '' : 'CanvasElement',
+  'div': 'DivElement',
+  'img': 'ImageElement',
+  'input': 'InputElement',
+  'li': 'LIElement',
+  'label': 'LabelElement',
+  'menu': 'MenuElement',
+  'meter': 'MeterElement',
+  'ol': 'OListElement',
+  'option': 'OptionElement',
+  'output': 'OutputElement',
+  'p': 'ParagraphElement',
+  'pre': 'PreElement',
+  'progress': 'ProgressElement',
+  'select': 'SelectElement',
+  'span': 'SpanElement',
+  'ul': 'UListElement',
+  'video': 'VideoElement',
 };
