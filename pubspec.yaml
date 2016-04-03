@@ -5,9 +5,9 @@ dependencies:
 
 # custom <ebisu_web_ui dependencies>
 
-  quiver: ">=0.18.0<0.19.0"
+  quiver: ">=0.21.0<0.22.0"
 
-  ebisu: "^0.1.0"
+  ebisu: "^0.6.19"
 
 # end <ebisu_web_ui dependencies>
 
